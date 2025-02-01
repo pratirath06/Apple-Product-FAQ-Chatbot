@@ -6,13 +6,12 @@ from langchain_community.vectorstores import FAISS
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains import create_retrieval_chain
-from api import Groq_API, Mistral_API
 from langchain_mistralai import MistralAIEmbeddings
 import streamlit as st
 from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 from streamlit_chat import message
-os.environ["GROQ_API_KEY"]=Groq_API
-os.environ["MISTRALAI_API_KEY"] = Mistral_API
+os.environ["GROQ_API_KEY"]=st.secrets["Groq_API"]
+os.environ["MISTRALAI_API_KEY"] = st.secrets["Mistral_API"]
 llm = ChatGroq(model="llama3-8b-8192")
 if 'responses' not in st.session_state:
     st.session_state['responses'] = ["Welcome to Apple, How can I assist you?"]
@@ -21,7 +20,7 @@ if 'requests' not in st.session_state:
 if 'buffer_memory' not in st.session_state:
             st.session_state.buffer_memory=ConversationBufferWindowMemory(k=3,return_messages=True)
 if "vector" not in st.session_state:
-    st.session_state.embedding =  MistralAIEmbeddings(model="mistral-embed", api_key=Mistral_API)
+    st.session_state.embedding =  MistralAIEmbeddings(model="mistral-embed", api_key=st.secrets["Mistral_API"])
     st.session_state.documents = []
     #st.session_state.urls = ["https://www.apple.com/","https://www.apple.com/store","https://www.apple.com/iphone","https://www.apple.com/ipad","https://www.apple.com/mac","https://www.apple.com/apple-vision-pro/","https://www.apple.com/airpods/","https://www.apple.com/tv-home/","https://www.apple.com/services/","https://www.apple.com/shop/accessories/all"]
     #for url in st.session_state.urls:
